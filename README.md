@@ -4,7 +4,7 @@ Sydney Trains has recently made estimated passenger load information on its flee
 
 Waratah trains have weight sensors installed on each carriage, which when coupled with the estimated weight of each passenger, can be used to provide an estimate of how busy the train is.
 
-Some Transport for NSW endorsed apps [have per-carriage level information](https://transportnsw.info/news/2018/real-time-train-occupancy-display-comes-to-transport-apps) provided through a private data feed that is not public (yet).  While Sydney Trains works on making the carriage-level data available to the public over the GTFS-realtime feeds, you can still access train-level passenger estimates by grabbing the information from the Trip Planner APIs.
+Some Transport for NSW endorsed apps [have per-carriage level information](https://transportnsw.info/news/2018/real-time-train-occupancy-display-comes-to-transport-apps) provided through another data feed that is not public (yet).  Sydney Trains and Transport for NSW plans to make per-carriage information available on Open Data through the existing GTFS-realtime data feeds.  Whilst this work is being done, you can still access train-level passenger estimates by grabbing the information from the Trip Planner APIs.
 
 This script will generate a JSON file `occupancy.json` with each Waratah train's trip ID and their corresponding occupancy status.  The trip IDs should match the trip IDs found in the GTFS static and GTFS realtime feeds.
 
