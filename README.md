@@ -21,7 +21,7 @@ You will need Node.js installed.  Whilst the script was written and tested with 
 
 ```
 git clone https://github.com/jxeeno/waratah-occupancy.git
-cd waratah-git
+cd waratah-occupancy
 npm i
 TFNSW_API_KEY=<your Open Data API key> node waratahOccupancy.js
 ```
