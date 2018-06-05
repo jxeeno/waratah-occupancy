@@ -32,14 +32,13 @@ const getFromStop = (divaStopId) => {
 	}).then(function (response) {
 		(response.data.stopEvents || []).forEach(stopEvent => {
 			let occupancy = null;
-
 			let tripId = stopEvent.properties.RealtimeTripId || stopEvent.properties.AVMSTripID;
-
 
 			// Trip Planner DM doesn't provide "current" occupancy
 			// Instead, we'll find the stopEvent with the arrival/departure time closest to now
 
-			// Joins the stop locations together to do some processing
+			// Joins the stop locations together to work out which stop is the closest
+			// Get the occupancy status from the closest stop
 			let sequentialLocations = [].concat(
 				stopEvent.previousLocations || []
 			).concat([Object.assign({
@@ -57,9 +56,17 @@ const getFromStop = (divaStopId) => {
 				if(location.properties && location.properties.occupancy){
 
 					let stopOccupancy = location.properties.occupancy;
-					let timeDiff = Math.abs(new Date(location.arrivalTimeEstimated || location.arrivalTimePlanned || location.departureTimeEstimated || location.departureTimePlanned) - now);
+					let timeDiff = Math.abs(
+						new Date(
+							location.arrivalTimeEstimated ||
+							location.arrivalTimePlanned ||
+							location.departureTimeEstimated ||
+							location.departureTimePlanned
+						) - now
+					);
 
-					// if the time difference is smaller than anything previously encountered, assign stopEvent occupancy to trip occupancy status
+					// if the time difference is smaller than anything previously encountered,
+					// assign stopEvent occupancy to trip occupancy status
 					if(timeDiff < minTimeDiff){
 						occupancy = stopOccupancy;
 						minTimeDiff = timeDiff;
@@ -72,9 +79,6 @@ const getFromStop = (divaStopId) => {
 				trips[tripId] = occupancy;
 			}
 		});
-
-		// let lastStopEvent = response.data.stopEvents[response.data.stopEvents.length-1];
-		// let lastTime = new Date(lastStopEvent.arrivalTimeEstimated || lastStopEvent.arrivalTimePlanned || lastStopEvent.departureTimeEstimated || lastStopEvent.departureTimePlanned);
 	})
 	.catch(function (error) {
 		console.error(error);
@@ -100,6 +104,7 @@ let stopIds = [
 
 const fs = require('fs');
 Promise.all(stopIds.map(stopId => getFromStop(stopId))).then(() => {
-	console.log(trips);
-	fs.writeFileSync('occupancy.json', JSON.stringify(trips));
+	let stringified = JSON.stringify(trips, null, 2);
+	console.log(stringified);
+	fs.writeFileSync('occupancy.json', stringified);
 });

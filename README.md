@@ -8,6 +8,8 @@ Some Transport for NSW endorsed apps [have per-carriage level information](https
 
 This script will generate a JSON file `occupancy.json` with each Waratah train's trip ID and their corresponding occupancy status.  The trip IDs should match the trip IDs found in the GTFS static and GTFS realtime feeds.
 
+An example `occupancy.json` is provided in this repo.
+
 ## Quickstart
 
 You will need Node.js installed.  Whilst the script was written and tested with Node.js v8.x, it may work on other versions too. YMMV.
